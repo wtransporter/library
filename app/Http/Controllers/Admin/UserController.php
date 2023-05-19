@@ -11,7 +11,7 @@ class UserController extends Controller
     public function index(): View
     {
         return view('dashboard', [
-            'users' => User::paginate(15)
+            'users' => User::paginate(10)
         ]);
     }
 }
