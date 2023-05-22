@@ -35,4 +35,21 @@ class UserTest extends TestCase
         $response->assertSee($users[0]->email);
         $response->assertSee($users[1]->email);
     }
+
+    public function test_user_can_be_deleted()
+    {
+        $user = User::factory()->create();
+
+        $this->assertDatabaseHas('users', [
+            'email' => $user->email
+        ]);
+
+        $response = $this->actingAs($user)->delete("/users/{$user->id}");
+
+        $this->assertDatabaseMissing('users', [
+            'email' => $user->email
+        ]);
+
+        $response->assertRedirect('/dashboard');
+    }
 }
